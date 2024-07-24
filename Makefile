@@ -14,5 +14,12 @@ d-purge:
 .PHONY: poetry-export-requirements
 # Export the current dependencies to requirements.txt.
 poetry-export-requirements:
-	poetry shell &&\
+	@poetry shell &&\
 	poetry export --format requirements.txt --output requirements.txt --without-hashes --without dev
+
+
+.PHONY: init-dev
+init-dev:
+	@poetry install --no-root --sync &&\
+	poetry shell &&\
+	pre-commit install

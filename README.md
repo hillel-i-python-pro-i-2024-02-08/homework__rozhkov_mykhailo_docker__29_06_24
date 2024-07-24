@@ -21,6 +21,16 @@ make d-run
 
 This will build docker images and run container which will use seed and count values from .env in work and save logs into app.log file
 
+## Dev
+
+To start dev with install all dependencies use next command:
+
+```
+make init-dev
+```
+
+It will install all dependencies in virtual environment for start work with project
+
 ## Tech stack
 
 - **Python** - Main PL
