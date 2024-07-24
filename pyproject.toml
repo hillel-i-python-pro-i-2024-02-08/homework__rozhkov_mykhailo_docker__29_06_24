@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "homework-rozhkov-mykhailo-docker-29-06-24"
+version = "0.1.0"
+description = ""
+authors = ["DaTrEvTeR <rozhkovm176@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+# Faking data
+Faker = "^26.0.0"
+# CLI
+typer = "^0.12.3"
+# Beautiful console printing
+rich = "^13.7.1"
+# Reading data from .env
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
