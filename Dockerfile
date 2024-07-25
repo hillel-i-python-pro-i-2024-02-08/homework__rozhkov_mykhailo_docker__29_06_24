@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --requirement requirements.txt
 
 COPY . /app/
 
 RUN mkdir logs
 
-CMD ["python", "app/main.py"]
+ENTRYPOINT ["python", "app/main.py"]

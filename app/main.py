@@ -1,80 +1,53 @@
-# main.py
-
 import logging
-import os
-from faker import Faker
 import typer
-from dotenv import load_dotenv
-from rich.console import Console
-from rich.table import Table
+from helpers import (
+    init_app_settings,
+    print_table,
+    fill_table_with_fake_data,
+    set_faker_settings,
+    init_table,
+    get_number_of_people,
+    get_faker_seed,
+)
+
 
 app = typer.Typer()
-
-load_dotenv()
-
-if not os.path.exists("logs"):
-    os.makedirs("logs")
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("logs/app.log"), logging.StreamHandler()],
-)
 
 
 @app.command()
 def generate_random_text(
-    count: int = typer.Option(default=10, help="Count of fake humans data to generate"),
-    seed: int = typer.Option(default=None, help="Seed for random text generation"),
-):
+    count: int = typer.Option(default=10, help="Number of fake people data to be generated"),
+    seed: int = typer.Option(default=None, help="Seed for generating fake data"),
+) -> None:
+    """
+    Generates and displays a table of fake human data.
+
+    :param count: Number of fake human data entries to generate.
+    :param seed: Seed for generating fake data.
+    :return: None
+    """
     logging.info("Start of function execution")
+    # Init fake seed and count
+    seed = get_faker_seed(seed)
+    count = get_number_of_people(count)
 
-    if seed:
-        logging.info("Using seed for fake from args")
-    else:
-        seed_from_dotenv = os.getenv("FAKER__SEED")
-        if seed_from_dotenv:
-            logging.info("Using seed for fake from .env ")
-        else:
-            logging.info("Using random seed for fake")
-        seed = seed_from_dotenv if seed_from_dotenv else Faker().random_int()
-
-    count_from_dotenv = os.getenv("HUMANS_COUNT")
-    count = int(count_from_dotenv) if count_from_dotenv else count
-
-    Faker.seed(seed)
-    fake = Faker("uk_UA")
+    fake = set_faker_settings(seed)
 
     logging.info(f"Using seed {seed} for faking")
     logging.info(f"Number of people to generate: {count}")
 
-    table = Table(title="Fake humans data")
+    # Create and fill table with fake data
+    table = init_table()
+    fill_table_with_fake_data(count, fake, table)
 
-    table.add_column("Name")
-    table.add_column("Age", justify="right")
-    table.add_column("Adress")
-    table.add_column("Phone number")
+    print_table(table)
 
-    for _ in range(count):
-        random_name = f"{fake.last_name()} {fake.first_name()}"
-        random_age = fake.random_int(min=0, max=100)
-        random_adress = fake.address()
-        random_phone_number = fake.numerify("+38 (0##) ###-##-##")
-
-        logging.info(
-            f"Generated human with next data: {random_name}, {random_age}, {random_adress}, {random_phone_number}"
-        )
-
-        table.add_row(random_name, str(random_age), random_adress, random_phone_number)
-
-    console = Console()
-    console.print(table)
-
-    logging.info("The function has been completed")
+    logging.info("Function completed")
 
 
 if __name__ == "__main__":
     try:
+        init_app_settings()
         app()
     except Exception as e:
-        logging.warning(f"The program failed with the following error:\n{e}")
+        logging.warning(f"The program ended with the following error:\n{e}")
