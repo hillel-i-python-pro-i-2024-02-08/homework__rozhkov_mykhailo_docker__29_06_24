@@ -1,7 +1,7 @@
 # Get user id for macOS and Linux
-.PHONY: d-run
+.PHONY: d-homework-i-run
 # Just run
-d-run:
+d-homework-i-run:
 	docker compose up --build
 
 
