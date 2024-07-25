@@ -5,9 +5,9 @@ d-homework-i-run:
 	docker compose up --build
 
 
-.PHONY: d-purge
+.PHONY: d-homework-i-purge
 # Purge all data related with services
-d-purge:
+d-homework-i-purge:
 	docker compose down --volumes --remove-orphans --rmi local --timeout 0
 
 
